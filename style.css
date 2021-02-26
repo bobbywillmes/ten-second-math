@@ -5,3 +5,7 @@ body {
 #main {
   font-size: 200%;
 }
+
+#scoresLabel {
+  display: none;
+}
