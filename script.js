@@ -1,4 +1,5 @@
 let c = 0
+let operators = []
 const randomQuestion = () => {
   // console.log(`randomQuestion()`)
   const randomNumBetween = (min, max) => {
@@ -10,11 +11,43 @@ const randomQuestion = () => {
     // console.log(random)
     return random
   }
+  const randomOperator = () => {
+    // console.log(`randomOperator()`)
+    let random = Math.random() * operators.length
+    random = Math.floor(random)
+    let operator = operators[random]
+    // console.log(`operator: ${operator}`)
+    return operator
+  }
+  let operator = randomOperator()
   let a = randomNumBetween(1, 10)
   let b = randomNumBetween(1, 10)
-  c = a + b
-  console.log(`${a} + ${b} = ${c}`)
-  let equation = `${a} + ${b}`
+  let equation = undefined
+  switch(true) {
+    case operator == 'addition':
+      equation = `${a} + ${b}`
+      c = a + b
+      break
+    case operator == 'subtraction':
+      if(a >= b) {
+        equation = `${a} - ${b}`
+        c = a - b
+      } else {
+        equation = `${b} - ${a}`
+        c = b - a
+      }
+      break
+    case operator == 'multiplication':
+      equation = `${a} * ${b}`
+      c = a * b
+      break
+    case operator == 'division':
+      equation = `${a} / ${b}`
+      let multiple = a * b
+      equation = `${multiple} / ${a}`
+      c = b
+      break
+    }
   $('#equation').text(equation)
   return c
 }
@@ -22,13 +55,13 @@ const randomQuestion = () => {
 let score = 0
 let timeleft = 10
 let timerStarted = false
-let cntr = 50
+let cntr = 90
 let gameOver = false
 function Timer(fn, t) {
   var timerObj = setInterval(fn, t)
 
   this.stop = function() {
-    console.log(`Timer.stop()`)
+    // console.log(`Timer.stop()`)
       if (timerObj) {
           clearInterval(timerObj)
           timerObj = null
@@ -38,7 +71,7 @@ function Timer(fn, t) {
 
   // start timer using current settings (if it's not already running)
   this.start = function() {
-    console.log(`Timer.start()`)
+    // console.log(`Timer.start()`)
     timerStarted = true
     if (!timerObj) {
           this.stop()
@@ -49,7 +82,7 @@ function Timer(fn, t) {
 
   // start with new interval, stop current interval
   this.reset = function(newT) {
-    console.log(`Timer.reset()`)
+    // console.log(`Timer.reset()`)
       t = newT
       return this.stop().start()
   }
@@ -71,64 +104,68 @@ function writeTime(time) {
 }
 
 function endGame() {
-  console.log(`endGame()`)
+  // console.log(`endGame()`)
   score = 0
-  cntr = 50
+  cntr = 90
   gameOver = true
   $('#score span').text(score)
+  $('#timer span').text('10')
 }
 
 var startTime = Date.now();
 var timer = new Timer(function() {
-  console.log(`new Timer()`)
-  // logScore(cntr-- + ": " + ((Date.now() - startTime) /1000).toFixed(3));
+  // console.log(`new Timer()`)
   if(timerStarted === true) {
     writeTime(cntr--)
   }
   if(cntr < 0) {
-    console.log(`cntr < 0`)
+    // console.log(`cntr < 0`)
     timer.stop()
     logScore(score)
     endGame()
   }
 }, 100);
 
-function resetGame() {
-  var newTime = +document.getElementById("timer").value * 1000
-  score = 0
-  cntr = 50
-  $('#score span').text(score)
-  timerStarted = true
+function getOperators() {
+  // console.log(`getOperators()`)
+  operators = []
+  // loop through each operator, if checked add to operators array & add btn-primary classs
+  $('#operators div').each(function() {
+    let operator = $(this).find('input').attr('id')
+    let checkbox = $(this).find('input')
+    let checked = checkbox.is(':checked')
+    if(checked) {
+      operators.push(operator)
+      $(this).removeClass('btn-secondary')
+      $(this).addClass('btn-primary')
+    } else {
+      $(this).removeClass('btn-primary')
+      $(this).addClass('btn-secondary')
+    }
+  })
+  // console.log(operators)
+  randomQuestion()
 }
 
-document.getElementById("reset").addEventListener("click", function(e) {
-  console.log(`#reset click`)
-  resetGame()
-});
+getOperators()
 
-document.getElementById("start").addEventListener("click", function(e) {
-  timer.start()
-});
-
-document.getElementById("stop").addEventListener("click", function(e) {
-  timer.stop();
-});
+$('#operators div').on('click', function() {
+  getOperators()
+})
   
 let started = false
 $('#answer input').keyup(function (event) {
-  console.log(`#answer keypress`)
-  console.log(cntr)
-  console.log(started)
+  // console.log(`#answer keypress`)
   if(started == false) {
     $(this).removeAttr('placeholder')
   }
   let value = $(this).val()
   if(gameOver = true && started == true) {
-    console.log(`gameOver: ${gameOver} started: ${started}`)
+    // console.log(`gameOver: ${gameOver} started: ${started}`)
     timer.start()
   }
 if (value == c) {
-    console.log(`correct!`)
+    // console.log(`correct!`)
     score += 1
     cntr += 10
     timerStarted = true

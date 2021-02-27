@@ -15,6 +15,34 @@
     <div class="col">
       <h1><i class="fas fa-stopwatch"></i> Ten Second Math</h1>
     </div>
+    <div class="col">
+      <div id="operators">
+        <div class="form-check-inline btn">
+          <label class="form-check-label" for="addition">
+            <input class="form-check-input" type="checkbox" value="" id="addition" checked>
+            +
+          </label>
+        </div>
+        <div class="form-check-inline btn">
+          <label class="form-check-label" for="subtraction">
+            <input class="form-check-input" type="checkbox" value="" id="subtraction" checked>
+            -
+          </label>
+        </div>
+        <div class="form-check-inline btn">
+          <label class="form-check-label" for="multiplication">
+            <input class="form-check-input" type="checkbox" value="" id="multiplication" checked>
+            *
+          </label>
+        </div>
+        <div class="form-check-inline btn">
+          <label class="form-check-label" for="division">
+            <input class="form-check-input" type="checkbox" value="" id="division" checked>
+            /
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
  </div>
  <div id="main" class="container">
@@ -26,7 +54,7 @@
       <div id="score">Score: <span>0</span></div>
      </div>
      <div class="col-4">
-       <div id="timer">Time: <span></span></div>
+       <div id="timer">Time: <span>10</span></div>
      </div>
    </div>
    <div class="row">
@@ -41,11 +69,6 @@
      <div class="col">
        <h4 id="scoresLabel">Previous Scores</h4>
        <div id="scores"></div>
-     </div>
-     <div class="col">
-       <button id="reset" class="btn-primary">Reset</button>
-       <button id="start" class="btn-primary">Start</button>
-       <button id="stop" class="btn-primary">Stop</button>
      </div>
    </div>
  </div>
